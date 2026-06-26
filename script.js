@@ -64,10 +64,10 @@ async function deleteUser(id) {
     });
 
     if (response.status === 200 || response.status === 204) {
-      setStatus(`The DELETE request for user ${id} returned status ${response.status}.`);
-      console.log(`Delete request completed for user ${id}.`);
+      setStatus(`✓ User ${id} successfully deleted!`);
+      console.log(`User ${id} successfully deleted!`);
     } else {
-      setStatus(`The DELETE request failed with status ${response.status}.`, true);
+      setStatus(`✗ Delete failed with status ${response.status}.`, true);
       console.error(`Delete failed. Status: ${response.status}`);
     }
   } catch (error) {
