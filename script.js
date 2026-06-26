@@ -1,7 +1,18 @@
+// GLA 5 assignment demo: fetch and display sample user data from JSONPlaceholder.
 const usersContainer = document.getElementById("users");
+const statusText = document.getElementById("status");
+const refreshBtn = document.getElementById("refreshBtn");
+const deleteBtn = document.getElementById("deleteBtn");
+const deleteIdInput = document.getElementById("deleteId");
+
+function setStatus(message, isError = false) {
+  statusText.textContent = message;
+  statusText.classList.toggle("error", isError);
+}
 
 async function getUsers() {
   try {
+    setStatus("Loading users...");
     const response = await fetch("https://jsonplaceholder.typicode.com/users/");
 
     if (!response.ok) {
@@ -10,13 +21,20 @@ async function getUsers() {
 
     const users = await response.json();
     renderUsers(users);
+    setStatus(`Loaded ${users.length} sample users successfully.`);
   } catch (error) {
+    setStatus("The user list could not be loaded. Please try again.", true);
     console.error("Could not fetch users:", error);
   }
 }
 
 function renderUsers(users) {
   usersContainer.innerHTML = "";
+
+  if (!Array.isArray(users) || users.length === 0) {
+    usersContainer.innerHTML = "<p>No users found.</p>";
+    return;
+  }
 
   users.forEach((user) => {
     const card = document.createElement("article");
@@ -33,23 +51,36 @@ function renderUsers(users) {
   });
 }
 
-async function deleteUser() {
-  const id = 10;
+async function deleteUser(id) {
+  if (!id || id < 1) {
+    setStatus("Please enter a valid user ID (1 or higher).", true);
+    return;
+  }
 
   try {
+    setStatus(`Deleting user ${id}...`);
     const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
       method: "DELETE"
     });
 
     if (response.status === 200 || response.status === 204) {
-      console.log(`User ${id} successfully deleted!`);
+      setStatus(`The DELETE request for user ${id} returned status ${response.status}.`);
+      console.log(`Delete request completed for user ${id}.`);
     } else {
+      setStatus(`The DELETE request failed with status ${response.status}.`, true);
       console.error(`Delete failed. Status: ${response.status}`);
     }
   } catch (error) {
+    setStatus("The DELETE request could not be completed. Please check your connection.", true);
     console.error("Delete request failed:", error);
   }
 }
 
+refreshBtn.addEventListener("click", getUsers);
+
+deleteBtn.addEventListener("click", () => {
+  const id = Number(deleteIdInput.value);
+  deleteUser(id);
+});
+
 getUsers();
-deleteUser();

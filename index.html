@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,11 +7,43 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="layout">
-    <h1>GLA 5: HTTP Requests</h1>
-    <p>Users fetched from JSONPlaceholder:</p>
-    <section id="users" class="users-grid" aria-live="polite"></section>
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="nav-logo">JC</a>
+      <ul class="nav-links">
+        <li><a href="#" class="active">GLA 5</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="page-hero">
+      <h1>GLA 5: HTTP Requests</h1>
+      <p>Demonstration of GET and DELETE requests using JSONPlaceholder</p>
+    </section>
+
+    <section class="layout">
+      <p>Use the controls below to request and display sample user data, then submit a DELETE request for a selected user ID.</p>
+
+      <section class="controls" aria-label="Request controls">
+        <button id="refreshBtn" type="button">Refresh Users (GET)</button>
+
+        <div class="delete-group">
+          <label for="deleteId">User ID to delete:</label>
+          <input id="deleteId" type="number" min="1" value="10" />
+          <button id="deleteBtn" type="button">Delete User (DELETE)</button>
+        </div>
+      </section>
+
+      <p id="status" class="status" aria-live="polite"></p>
+      <section id="users" class="users-grid" aria-live="polite"></section>
+    </section>
   </main>
+
+  <footer>
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="return-top-btn">Return to Top</button>
+    <p>&copy; 2026 Jordan Champagne — TECH1101 GLA5 Assignment</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
